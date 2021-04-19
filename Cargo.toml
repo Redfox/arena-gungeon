@@ -1,5 +1,5 @@
 [package]
-name = "arena"
+name = "arena_gungeon"
 version = "0.1.0"
 authors = ["Redfox <vitor_pereira.2013@hotmail.com>"]
 edition = "2018"

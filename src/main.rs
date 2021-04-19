@@ -1,9 +1,12 @@
-use scene_manager::SceneManager;
 use constants::{WINDOW_HEIGHT, WINDOW_WIDHT, WINDOW_TITLE};
-use macroquad::{color::Color, math::RectOffset, prelude::{Conf, collections::storage}, texture::Image, ui::{Skin, root_ui}};
 
+use game::Game;
+use macroquad::prelude::Conf;
+
+mod game;
 mod scenes;
 mod scene_manager;
+mod gui_resources;
 mod constants;
 
 fn window_conf() -> Conf {
@@ -17,46 +20,9 @@ fn window_conf() -> Conf {
   }
 }
 
-pub struct GuiResources {
-  title_skin: Skin,
-}
-
-impl GuiResources {
-  fn new() -> Self {
-    let title_skin = {
-      let button_style = root_ui()
-        .style_builder()
-        .background(Image::from_file_with_format(
-          include_bytes!("../resources/ui/button_background_2.png"),
-          None
-        ))
-        .background_margin(RectOffset::new(8.0, 8.0, 12.0, 12.0))
-        .margin(RectOffset::new(8.0, 8.0, 110.0, 12.0))
-        // .background_hovered(background_hovered)
-        .text_color(Color::from_rgba(200, 200, 160, 255))
-        .font_size(34)
-        .build();
-
-      Skin {
-        button_style,
-        ..root_ui().default_skin()
-      }
-    };
-
-    GuiResources {
-      title_skin
-    }
-  }
-}
-
 #[macroquad::main(window_conf)]
 async fn main() {
-  let gui_resources = GuiResources::new();
-  storage::store(gui_resources);
+  let game = Game::new();
 
-  let scene_manager = SceneManager::new();
-
-  loop {
-    scene_manager.render_scene().await;
-  }
+  game.run().await;
 }
