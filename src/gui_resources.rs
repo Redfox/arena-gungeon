@@ -8,12 +8,12 @@ use macroquad::{
 };
 
 pub struct GuiResources {
-  pub title_skin: Skin,
+  pub main_menu_skin: Skin,
 }
 
 impl GuiResources {
   pub fn new() -> Self {
-    let title_skin = {
+    let main_menu_skin = {
       let button_style = root_ui()
         .style_builder()
         .background(Image::from_file_with_format(
@@ -34,7 +34,7 @@ impl GuiResources {
     };
 
     GuiResources {
-      title_skin
+      main_menu_skin
     }
   }
 }
