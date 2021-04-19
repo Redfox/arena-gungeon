@@ -1,4 +1,4 @@
-use crate::scenes::{Scenes, main_menu::MainMenuScreen};
+use crate::scenes::{Scenes, main_menu::MainMenuScene};
 
 pub struct SceneManager {
   current_scene: Scenes
@@ -14,7 +14,7 @@ impl SceneManager {
   pub async fn render_scene(&self) {
     match self.current_scene {
       Scenes::MainMenu => {
-        MainMenuScreen::render().await;
+        MainMenuScene::render().await;
       }
     }
   }

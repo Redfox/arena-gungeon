@@ -8,9 +8,9 @@ use macroquad::{
 
 mod gui;
 
-pub struct MainMenuScreen;
+pub struct MainMenuScene;
 
-impl MainMenuScreen {
+impl MainMenuScene {
   pub async fn render() {
     let resources = storage::get_mut::<GuiResources>();
     root_ui().push_skin(&resources.title_skin);
