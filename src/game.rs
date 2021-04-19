@@ -18,7 +18,7 @@ impl Game {
     }
   }
 
-  pub async fn run(&self) {
+  pub async fn run(mut self) {
     self.scene_manager.render_scene().await;
   }
 }
