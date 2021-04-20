@@ -8,6 +8,7 @@ mod scenes;
 mod scene_manager;
 mod gui_resources;
 mod constants;
+mod resources;
 
 fn window_conf() -> Conf {
   Conf {

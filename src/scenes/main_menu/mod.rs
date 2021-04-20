@@ -1,10 +1,6 @@
 use crate::{gui_resources::GuiResources};
 use gui::MainMenuGui;
-use macroquad::{
-  prelude::collections::storage,
-  ui::root_ui
-};
-
+use macroquad::{prelude::collections::storage, ui::root_ui};
 use super::Scenes;
 
 mod gui;
@@ -27,3 +23,4 @@ impl MainMenuScene {
     None
   }
 }
+

@@ -1,10 +1,11 @@
-use macroquad::prelude::next_frame;
+use macroquad::prelude::{clear_background, draw_text, screen_height, screen_width, get_time, collections::storage, coroutines::start_coroutine, next_frame};
+use macroquad::color;
 
-use crate::scenes::{
+use crate::{resources::Resources, scenes::{
   Scenes,
   arena_dungeon::ArenaDungeonScreen,
   main_menu::MainMenuScene
-};
+}};
 
 pub struct SceneManager {
   pub current_scene: Scenes
@@ -22,12 +23,33 @@ impl SceneManager {
   }
 
   pub async fn render_scene(&mut self) {
+    let resources_loading = start_coroutine(async move {
+      let resources = Resources::new().await.unwrap();
+      storage::store(resources);
+    });
+    
     loop {
       let scene_option = match self.current_scene {
         Scenes::MainMenu => {
           MainMenuScene::render().await
         }
         Scenes::ArenaDungeon => {
+          while !resources_loading.is_done() {
+            clear_background(color::BLACK);
+            draw_text(
+              &format!(
+                  "Loading resources {}",
+                  ".".repeat(((get_time() * 2.0) as usize) % 4)
+              ),
+              screen_width() / 2.0 - 160.0,
+              screen_height() / 2.0,
+              40.,
+              color::WHITE,
+            );
+
+            next_frame().await;
+          }
+          
           ArenaDungeonScreen::render().await
         }
       };
