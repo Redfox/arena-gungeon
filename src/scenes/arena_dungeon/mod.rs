@@ -30,7 +30,7 @@ impl ArenaDungeonScreen {
     
     self.player.update();
 
-    self.player.draw();
+    self.player.draw(resources.player_texture);
     
     if is_key_down(KeyCode::W) {
       self.player.set_direction(Direction::Up);
