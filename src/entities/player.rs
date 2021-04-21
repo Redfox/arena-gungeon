@@ -1,6 +1,14 @@
-use macroquad::{color, experimental::{
-    animation::{AnimatedSprite, Animation},
-  }, prelude::{DrawTextureParams, Rect, Texture2D, Vec2, draw_texture_ex, load_texture, vec2}};
+use macroquad::{
+  color, 
+  experimental::animation::{AnimatedSprite, Animation},
+  prelude::{
+    DrawTextureParams,
+    Texture2D,
+    Vec2,
+    draw_texture_ex,
+    vec2
+  }
+};
 
 #[derive(Debug, Copy, Clone)]
 pub enum Direction {
@@ -13,7 +21,6 @@ pub enum Direction {
 pub struct Player {
   pub position: Vec2,
   pub moving: bool,
-  player_texture: Texture2D,
   sprite: AnimatedSprite,
   direction: Direction,
 }
@@ -47,26 +54,17 @@ impl Player {
       }
     ], true);
     
-    let player_texture = load_texture("resources/player-spritesheet.png")
-    .await
-    .expect("Fail to load playersheet");
-    
     Player {
       position: vec2(100., 100.),
       direction: Direction::Down,
       sprite,
-      player_texture,
       moving: false,
     }
   }
 
-  pub fn draw(&mut self) {
-    self.sprite.playing = self.moving;
-    
-    self.sprite.update();
-
+  pub fn draw(&mut self, player_texture: Texture2D) {
     draw_texture_ex(
-      self.player_texture, 
+      player_texture, 
       self.position.x, 
       self.position.y, 
       color::WHITE,
@@ -79,7 +77,10 @@ impl Player {
   }
 
   pub fn update(&mut self) {
+    self.sprite.playing = self.moving;
+
     self.sprite.set_animation(self.direction as usize);
+    self.sprite.update();
 
     if self.moving {
       let pos = match self.direction {
