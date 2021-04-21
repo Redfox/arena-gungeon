@@ -9,6 +9,7 @@ use macroquad::{
     vec2
   }
 };
+use macroquad_platformer::World;
 
 #[derive(Debug, Copy, Clone)]
 pub enum Direction {
@@ -76,7 +77,7 @@ impl Player {
     )
   }
 
-  pub fn update(&mut self) {
+  pub fn update(&mut self, collision_world: &World) {
     self.sprite.playing = self.moving;
 
     self.sprite.set_animation(self.direction as usize);
@@ -85,16 +86,32 @@ impl Player {
     if self.moving {
       let pos = match self.direction {
         Direction::Up => {
-          vec2(0., -10.)
+          if collision_world.solid_at(vec2(self.position.x, self.position.y - 17.)) {
+            vec2(0., 0.)
+          } else {
+            vec2(0., -5.)
+          }
         },
         Direction::Down  => {
-          vec2(0., 10.)
+          if collision_world.solid_at(vec2(self.position.x, self.position.y + 17.))  {
+            vec2(0., 0.)
+          } else {
+            vec2(0., 5.)
+          }
         },
         Direction::Left  => {
-          vec2(-10., 0.)
+          if collision_world.solid_at(vec2(self.position.x - 17., self.position.y))  {
+            vec2(0., 0.)
+          } else {
+            vec2(-5., 0.)
+          }
         },
         Direction::Right  => {
-          vec2(10., 0.)
+          if collision_world.solid_at(vec2(self.position.x + 17., self.position.y))  {
+            vec2(0., 0.)
+          } else {
+            vec2(5., 0.)
+          }
         },
       };
 

@@ -1,9 +1,11 @@
 use macroquad::prelude::{FileError, Texture2D, load_string, load_texture};
 use macroquad_tiled as tiled;
+use macroquad_platformer::World as CollisionWorld;
 
 pub struct Resources {
   pub tiled_map: tiled::Map,
-  pub player_texture: Texture2D
+  pub player_texture: Texture2D,
+  pub collision_world: CollisionWorld
 }
 
 impl Resources {
@@ -27,9 +29,24 @@ impl Resources {
       .expect("Fail to load playersheet");
     player_texture.set_filter(macroquad::prelude::FilterMode::Nearest);
 
+    let mut static_colliders = vec![];
+    for (_x, _y, tile) in tiled_map.tiles("collision", None) {
+      static_colliders.push(tile.is_some());
+    }
+
+    let mut collision_world = CollisionWorld::new();
+    collision_world.add_static_tiled_layer(
+      static_colliders,
+      32.,
+      32.,
+      tiled_map.raw_tiled_map.width as _,
+      1
+    );
+
     Ok(Resources {
       tiled_map,
-      player_texture
+      player_texture,
+      collision_world
     })
   }
 }

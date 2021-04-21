@@ -25,13 +25,15 @@ impl ArenaDungeonScreen {
     let w = resources.tiled_map.raw_tiled_map.tilewidth * resources.tiled_map.raw_tiled_map.width;
     let h = resources.tiled_map.raw_tiled_map.tileheight * resources.tiled_map.raw_tiled_map.height;
     
-    resources.tiled_map.draw_tiles("ground", Rect::new(0.0, 0.0, w as f32 * 2., h as f32 * 2.), None);
-    resources.tiled_map.draw_tiles("wall", Rect::new(0.0, 0.0, w as f32 * 2., h as f32 * 2.), None);
+    resources.tiled_map.draw_tiles("ground", Rect::new(0.0, 0.0, w as f32, h as f32), None);
+    resources.tiled_map.draw_tiles("wall", Rect::new(0.0, 0.0, w as f32, h as f32), None);
     
-    self.player.update();
+    self.player.update(&resources.collision_world);
 
     self.player.draw(resources.player_texture);
     
+    resources.tiled_map.draw_tiles("toplayer", Rect::new(0.0, 0.0, w as f32, h as f32), None);
+
     if is_key_down(KeyCode::W) {
       self.player.set_direction(Direction::Up);
       self.player.moving = true;
