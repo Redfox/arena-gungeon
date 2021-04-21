@@ -10,8 +10,8 @@ pub struct ArenaDungeonScreen {
 }
 
 impl ArenaDungeonScreen {
-  pub fn new() -> Self {
-    let player = Player::new();
+  pub async fn new() -> Self {
+    let player = Player::new().await;
 
     ArenaDungeonScreen {
       player

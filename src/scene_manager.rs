@@ -37,7 +37,7 @@ impl SceneManager {
       storage::store(resources);
     });
 
-    let mut arena_dungeon_scene = ArenaDungeonScreen::new();
+    let mut arena_dungeon_scene = ArenaDungeonScreen::new().await;
 
     loop {
       let scene_option = match self.current_scene {
