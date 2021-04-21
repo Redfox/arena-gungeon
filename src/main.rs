@@ -4,6 +4,7 @@ use game::Game;
 use macroquad::prelude::Conf;
 
 mod game;
+mod entities;
 mod scenes;
 mod scene_manager;
 mod gui_resources;

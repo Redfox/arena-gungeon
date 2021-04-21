@@ -1,14 +1,19 @@
-use macroquad::prelude::{Rect, clear_background, collections::storage};
+use macroquad::prelude::{Rect, WHITE, clear_background, collections::storage, draw_rectangle};
 use macroquad::color::SKYBLUE;
 
-use crate::resources::Resources;
+use crate::{
+  resources::Resources,
+  entities::player::Player,
+};
 
 use super::Scenes;
 
-pub struct ArenaDungeonScreen;
+pub struct ArenaDungeonScreen {
+  pub player: Player
+}
 
 impl ArenaDungeonScreen {
-  pub async fn render() -> Option<Scenes> {
+  pub async fn render(&self) -> Option<Scenes> {
     clear_background(SKYBLUE);
 
     let resources = storage::get_mut::<Resources>();
@@ -17,6 +22,8 @@ impl ArenaDungeonScreen {
     
     resources.tiled_map.draw_tiles("ground", Rect::new(0.0, 0.0, w as f32 * 2., h as f32 * 2.), None);
     resources.tiled_map.draw_tiles("wall", Rect::new(0.0, 0.0, w as f32 * 2., h as f32 * 2.), None);
+
+    draw_rectangle(self.player.position.x, self.player.position.y, 40.0, 40.0, WHITE);
 
     None
   }
