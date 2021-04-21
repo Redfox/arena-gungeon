@@ -1,15 +1,6 @@
-use macroquad::{
-  color,
-  math::{Rect},
-  prelude::{
-    DrawTextureParams,
-    Texture2D,
-    Vec2,
-    draw_texture_ex,
-    load_texture,
-    vec2
-  }
-};
+use macroquad::{color, experimental::{
+    animation::{AnimatedSprite, Animation},
+  }, prelude::{DrawTextureParams, Texture2D, Vec2, draw_texture_ex, load_texture, vec2}};
 
 #[derive(Debug, Copy, Clone)]
 pub enum Direction {
@@ -22,49 +13,74 @@ pub enum Direction {
 pub struct Player {
   pub position: Vec2,
   pub moving: bool,
+  player_texture: Texture2D,
+  sprite: AnimatedSprite,
   direction: Direction,
-  texture: Texture2D
 }
 
 impl Player {
   pub async fn new() -> Self {
-    let texture = load_texture("resources/player-sheet.png").await.expect("msg");
-    texture.set_filter(macroquad::prelude::FilterMode::Nearest);
-
+    let sprite = AnimatedSprite::new(16, 16, &[
+      Animation {
+        name: "up".to_string(),
+        row: 0,
+        frames: 4,
+        fps: 12,
+      },
+      Animation {
+        name: "down".to_string(),
+        row: 1,
+        frames: 4,
+        fps: 12,
+      },
+      Animation {
+        name: "left".to_string(),
+        row: 2,
+        frames: 4,
+        fps: 12,
+      },
+      Animation {
+        name: "right".to_string(),
+        row: 3,
+        frames: 4,
+        fps: 12,
+      }
+    ], true);
+    
+    let player_texture = load_texture("resources/player-spritesheet.png")
+    .await
+    .expect("Fail to load playersheet");
+    
     Player {
       position: vec2(100., 100.),
       direction: Direction::Down,
+      sprite,
+      player_texture,
       moving: false,
-      texture
     }
   }
 
-  pub fn draw(&self) {
-    // draw_rectangle(self.position.x, self.position.y, 40.0, 40.0, color::WHITE);
-    
-    let tile_size = 16;
-
-    let source = Rect::new(
-      (tile_size * (self.direction as u8)) as f32,
-      (tile_size * 0) as f32,
-      tile_size as f32,
-      tile_size as f32,
-    );
+  pub fn draw(&mut self) {
+    if self.moving {
+      self.sprite.update();
+    }
 
     draw_texture_ex(
-      self.texture, 
+      self.player_texture, 
       self.position.x, 
       self.position.y, 
       color::WHITE,
       DrawTextureParams {
-        source: Some(source),
-        dest_size: Some(vec2((tile_size as f32) * 3., (tile_size  as f32)* 3.)),
+        source: Some(self.sprite.frame().source_rect),
+        dest_size: Some(vec2((16 as f32) * 3., (16  as f32)* 3.)),
         ..Default::default()
       }
     )
   }
 
   pub fn update(&mut self) {
+    self.sprite.set_animation(self.direction as usize);
+
     if self.moving {
       let pos = match self.direction {
         Direction::Up => {

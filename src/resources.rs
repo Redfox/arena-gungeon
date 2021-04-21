@@ -1,8 +1,9 @@
-use macroquad::prelude::{FileError, load_string, load_texture};
+use macroquad::prelude::{FileError, Texture2D, load_string, load_texture};
 use macroquad_tiled as tiled;
 
 pub struct Resources {
   pub tiled_map: tiled::Map,
+  pub player_texture: Texture2D
 }
 
 impl Resources {
@@ -21,8 +22,14 @@ impl Resources {
       &[]
     ).expect("Fail to load tile map");
     
+    let player_texture = load_texture("resources/player-spritesheet.png")
+      .await
+      .expect("Fail to load playersheet");
+    player_texture.set_filter(macroquad::prelude::FilterMode::Nearest);
+
     Ok(Resources {
-      tiled_map
+      tiled_map,
+      player_texture
     })
   }
 }
