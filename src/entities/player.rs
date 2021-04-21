@@ -26,7 +26,7 @@ pub struct Player {
 }
 
 impl Player {
-  pub async fn new() -> Self {
+  pub fn new() -> Self {
     let sprite = AnimatedSprite::new(32, 32, &[
       Animation {
         name: "up".to_string(),
