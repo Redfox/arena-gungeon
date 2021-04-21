@@ -1,6 +1,6 @@
 use macroquad::{color, experimental::{
     animation::{AnimatedSprite, Animation},
-  }, prelude::{DrawTextureParams, Texture2D, Vec2, draw_texture_ex, load_texture, vec2}};
+  }, prelude::{DrawTextureParams, Rect, Texture2D, Vec2, draw_texture_ex, load_texture, vec2}};
 
 #[derive(Debug, Copy, Clone)]
 pub enum Direction {
@@ -20,7 +20,7 @@ pub struct Player {
 
 impl Player {
   pub async fn new() -> Self {
-    let sprite = AnimatedSprite::new(16, 16, &[
+    let sprite = AnimatedSprite::new(32, 32, &[
       Animation {
         name: "up".to_string(),
         row: 0,
@@ -61,9 +61,9 @@ impl Player {
   }
 
   pub fn draw(&mut self) {
-    if self.moving {
-      self.sprite.update();
-    }
+    self.sprite.playing = self.moving;
+    
+    self.sprite.update();
 
     draw_texture_ex(
       self.player_texture, 
@@ -72,7 +72,7 @@ impl Player {
       color::WHITE,
       DrawTextureParams {
         source: Some(self.sprite.frame().source_rect),
-        dest_size: Some(vec2((16 as f32) * 3., (16  as f32)* 3.)),
+        dest_size: Some(self.sprite.frame().dest_size),
         ..Default::default()
       }
     )
