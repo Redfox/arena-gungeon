@@ -1,10 +1,20 @@
-use macroquad::prelude::{clear_background, draw_text, screen_height, screen_width, get_time, collections::storage, coroutines::start_coroutine, next_frame};
+use macroquad::prelude::{
+  Vec2,
+  clear_background,
+  draw_text,
+  screen_height,
+  screen_width,
+  get_time,
+  collections::storage,
+  coroutines::start_coroutine,
+  next_frame,
+};
 use macroquad::color;
 
-use crate::{resources::Resources, scenes::{
+use crate::{entities::player::Player, resources::Resources, scenes::{
   Scenes,
   arena_dungeon::ArenaDungeonScreen,
-  main_menu::MainMenuScene
+  main_menu::MainMenuScene,
 }};
 
 pub struct SceneManager {
@@ -27,7 +37,13 @@ impl SceneManager {
       let resources = Resources::new().await.unwrap();
       storage::store(resources);
     });
-    
+
+    let arena_dungeon_scene = ArenaDungeonScreen {
+      player: Player {
+        position: Vec2::new(0.0, 5.0),
+      }
+    };
+
     loop {
       let scene_option = match self.current_scene {
         Scenes::MainMenu => {
@@ -50,7 +66,7 @@ impl SceneManager {
             next_frame().await;
           }
           
-          ArenaDungeonScreen::render().await
+          arena_dungeon_scene.render().await
         }
       };
 
