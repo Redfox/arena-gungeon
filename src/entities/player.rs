@@ -83,31 +83,33 @@ impl Player {
     self.sprite.set_animation(self.direction as usize);
     self.sprite.update();
 
+    let n = 5.;
+
     if self.moving {
       let pos = match self.direction {
         Direction::Up => {
-          if collision_world.solid_at(vec2(self.position.x, self.position.y - 17.)) {
+          if collision_world.solid_at(vec2(self.position.x, self.position.y - n)) {
             vec2(0., 0.)
           } else {
             vec2(0., -5.)
           }
         },
         Direction::Down  => {
-          if collision_world.solid_at(vec2(self.position.x, self.position.y + 17.))  {
+          if collision_world.solid_at(vec2(self.position.x, self.position.y + 32.))  {
             vec2(0., 0.)
           } else {
             vec2(0., 5.)
           }
         },
         Direction::Left  => {
-          if collision_world.solid_at(vec2(self.position.x - 17., self.position.y))  {
+          if collision_world.solid_at(vec2(self.position.x - n, self.position.y))  {
             vec2(0., 0.)
           } else {
             vec2(-5., 0.)
           }
         },
         Direction::Right  => {
-          if collision_world.solid_at(vec2(self.position.x + 17., self.position.y))  {
+          if collision_world.solid_at(vec2(self.position.x + 32., self.position.y))  {
             vec2(0., 0.)
           } else {
             vec2(5., 0.)
