@@ -1,5 +1,4 @@
 use macroquad::prelude::{
-  Vec2,
   clear_background,
   draw_text,
   screen_height,
@@ -11,7 +10,7 @@ use macroquad::prelude::{
 };
 use macroquad::color;
 
-use crate::{entities::player::Player, resources::Resources, scenes::{
+use crate::{resources::Resources, scenes::{
   Scenes,
   arena_dungeon::ArenaDungeonScreen,
   main_menu::MainMenuScene,
@@ -24,7 +23,7 @@ pub struct SceneManager {
 impl SceneManager {
   pub fn new() -> Self {
     SceneManager {
-      current_scene: Scenes::MainMenu
+      current_scene: Scenes::MainMenu,
     }
   }
 
@@ -38,11 +37,7 @@ impl SceneManager {
       storage::store(resources);
     });
 
-    let arena_dungeon_scene = ArenaDungeonScreen {
-      player: Player {
-        position: Vec2::new(0.0, 5.0),
-      }
-    };
+    let mut arena_dungeon_scene = ArenaDungeonScreen::new();
 
     loop {
       let scene_option = match self.current_scene {

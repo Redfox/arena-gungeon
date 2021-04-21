@@ -7,7 +7,7 @@ pub struct Game {
 }
 
 impl Game {
-  pub fn new() -> Game {
+  pub fn new() -> Self {
     let scene_manager = SceneManager::new();
     let gui_resources = GuiResources::new();
 
