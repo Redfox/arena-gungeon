@@ -1,6 +1,8 @@
-use macroquad::prelude::{Texture2D, Vec2, animation::{AnimatedSprite, Animation}, get_time};
+use macroquad::prelude::{Vec2, animation::{AnimatedSprite, Animation}, collections::storage, get_time};
 use macroquad_platformer::World;
 use rand::Rng;
+
+use crate::resources::Resources;
 
 use super::entity::{Direction, Entity};
 
@@ -38,20 +40,23 @@ impl Enemy {
       }
     ], true);
 
+    let resources = storage::get::<Resources>();
+
     Enemy {
       entity: Entity {
         position: pos,
         direction: Direction::Down,
         sprite,
         moving: false,
-        speed: 5
+        speed: 5,
+        texture: resources.enemy_texture
       },
       last_dir: 0
     }
   }
 
-  pub fn draw(&mut self, texture: Texture2D) {
-    self.entity.draw(texture);
+  pub fn draw(&mut self) {
+    self.entity.draw();
   }
 
   pub fn update(&mut self, collision_world: &World) {
