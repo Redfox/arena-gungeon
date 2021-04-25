@@ -24,16 +24,16 @@ impl Entity {
     let debug = false;
     if debug {
       // collid top left
-      draw_circle(self.position.x + 7., self.position.y + 7., 2., color::BLACK);
+      draw_circle(self.position.x, self.position.y, 2., color::BLACK);
 
       // collid top right
-      draw_circle(self.position.x + self.tile_width as f32 - 7., self.position.y + 7., 2., color::BLACK);
+      draw_circle(self.position.x + self.tile_width as f32, self.position.y, 2., color::BLACK);
 
       // collid down left
-      draw_circle(self.position.x + 7., self.position.y + self.tile_height as f32 + 5., 2., color::BLACK);
+      draw_circle(self.position.x, self.position.y + self.tile_height as f32, 2., color::BLACK);
 
       // collid down right
-      draw_circle(self.position.x + self.tile_width as f32 - 7., self.position.y + self.tile_height as f32 + 5., 2., color::BLACK);
+      draw_circle(self.position.x + self.tile_width as f32, self.position.y + self.tile_height as f32, 2., color::BLACK);
     }
 
     draw_texture_ex(
@@ -55,10 +55,10 @@ impl Entity {
     self.sprite.set_animation(self.direction as usize);
     self.sprite.update();
 
-    let point_left_top = vec2(self.position.x + 7., self.position.y + 7.);
-    let point_right_top = vec2(self.position.x + self.tile_width as f32 - 7., self.position.y + 7.);
-    let point_left_bottom = vec2(self.position.x + 7., self.position.y + self.tile_height as f32 + 5.);
-    let point_right_bottom = vec2(self.position.x + self.tile_width as f32 - 7., self.position.y + self.tile_height as f32 + 5.);
+    let point_left_top = vec2(self.position.x, self.position.y);
+    let point_right_top = vec2(self.position.x + self.tile_width as f32, self.position.y);
+    let point_left_bottom = vec2(self.position.x + 7., self.position.y + self.tile_height as f32);
+    let point_right_bottom = vec2(self.position.x + self.tile_width as f32, self.position.y + self.tile_height as f32);
 
     if self.moving {
       let collide_top = 
