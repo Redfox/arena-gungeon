@@ -11,6 +11,8 @@ pub struct Enemy {
 
 impl Enemy {
   pub fn new(pos: Vec2) -> Self {
+    let tile_width = 16;
+    let tile_height = 16;
     let sprite = AnimatedSprite::new(16, 16, &[
       Animation {
         name: "idle".to_string(),
@@ -44,7 +46,9 @@ impl Enemy {
         direction: Direction::Down,
         sprite,
         moving: false,
-        speed: 5
+        speed: 5,
+        tile_width,
+        tile_height
       },
       last_dir: 0
     }

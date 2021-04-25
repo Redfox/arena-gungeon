@@ -15,6 +15,8 @@ pub struct Entity {
   pub sprite: AnimatedSprite,
   pub direction: Direction,
   pub speed: u8,
+  pub tile_width: u32,
+  pub tile_height: u32,
 }
 
 impl Entity {
@@ -25,13 +27,13 @@ impl Entity {
       draw_circle(self.position.x + 7., self.position.y + 7., 2., color::BLACK);
 
       // collid top right
-      draw_circle(self.position.x + 32. - 7., self.position.y + 7., 2., color::BLACK);
+      draw_circle(self.position.x + self.tile_width as f32 - 7., self.position.y + 7., 2., color::BLACK);
 
       // collid down left
-      draw_circle(self.position.x + 7., self.position.y + 32. + 5., 2., color::BLACK);
+      draw_circle(self.position.x + 7., self.position.y + self.tile_height as f32 + 5., 2., color::BLACK);
 
       // collid down right
-      draw_circle(self.position.x + 32. - 7., self.position.y + 32. + 5., 2., color::BLACK);
+      draw_circle(self.position.x + self.tile_width as f32 - 7., self.position.y + self.tile_height as f32 + 5., 2., color::BLACK);
     }
 
     draw_texture_ex(
@@ -54,9 +56,9 @@ impl Entity {
     self.sprite.update();
 
     let point_left_top = vec2(self.position.x + 7., self.position.y + 7.);
-    let point_right_top = vec2(self.position.x + 32. - 7., self.position.y + 7.);
-    let point_left_bottom = vec2(self.position.x + 7., self.position.y + 32. + 5.);
-    let point_right_bottom = vec2(self.position.x + 32. - 7., self.position.y + 32. + 5.);
+    let point_right_top = vec2(self.position.x + self.tile_width as f32 - 7., self.position.y + 7.);
+    let point_left_bottom = vec2(self.position.x + 7., self.position.y + self.tile_height as f32 + 5.);
+    let point_right_bottom = vec2(self.position.x + self.tile_width as f32 - 7., self.position.y + self.tile_height as f32 + 5.);
 
     if self.moving {
       let collide_top = 
