@@ -37,6 +37,26 @@ impl SceneManager {
       storage::store(resources);
     });
 
+    loop {
+      while !resources_loading.is_done() {
+        clear_background(color::BLACK);
+        draw_text(
+          &format!(
+              "Loading resources {}",
+              ".".repeat(((get_time() * 2.0) as usize) % 4)
+          ),
+          screen_width() / 2.0 - 160.0,
+          screen_height() / 2.0,
+          40.,
+          color::WHITE,
+        );
+  
+        next_frame().await;
+      }
+
+      break;
+    }
+
     let mut arena_dungeon_scene = ArenaDungeonScreen::new();
 
     loop {
@@ -45,22 +65,6 @@ impl SceneManager {
           MainMenuScene::render().await
         }
         Scenes::ArenaDungeon => {
-          while !resources_loading.is_done() {
-            clear_background(color::BLACK);
-            draw_text(
-              &format!(
-                  "Loading resources {}",
-                  ".".repeat(((get_time() * 2.0) as usize) % 4)
-              ),
-              screen_width() / 2.0 - 160.0,
-              screen_height() / 2.0,
-              40.,
-              color::WHITE,
-            );
-
-            next_frame().await;
-          }
-          
           arena_dungeon_scene.render().await
         }
       };

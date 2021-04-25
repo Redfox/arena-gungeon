@@ -15,10 +15,11 @@ pub struct Entity {
   pub sprite: AnimatedSprite,
   pub direction: Direction,
   pub speed: u8,
+  pub texture: Texture2D,
 }
 
 impl Entity {
-  pub fn draw(&mut self, texture: Texture2D) {
+  pub fn draw(&mut self) {
     let debug = false;
     if debug {
       // collid top left
@@ -35,7 +36,7 @@ impl Entity {
     }
 
     draw_texture_ex(
-      texture, 
+      self.texture, 
       self.position.x, 
       self.position.y, 
       color::WHITE,
