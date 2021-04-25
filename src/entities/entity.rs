@@ -55,10 +55,13 @@ impl Entity {
     self.sprite.set_animation(self.direction as usize);
     self.sprite.update();
 
+    let tile_width = self.tile_width as f32;
+    let tile_height = self.tile_height as f32;
+
     let point_left_top = vec2(self.position.x, self.position.y);
-    let point_right_top = vec2(self.position.x + self.tile_width as f32, self.position.y);
-    let point_left_bottom = vec2(self.position.x, self.position.y + self.tile_height as f32);
-    let point_right_bottom = vec2(self.position.x + self.tile_width as f32, self.position.y + self.tile_height as f32);
+    let point_right_top = vec2(self.position.x + tile_width, self.position.y);
+    let point_left_bottom = vec2(self.position.x, self.position.y + tile_height);
+    let point_right_bottom = vec2(self.position.x + tile_width, self.position.y + tile_height);
 
     if self.moving {
       let collide_top = 
