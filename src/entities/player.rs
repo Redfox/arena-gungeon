@@ -1,14 +1,5 @@
-use macroquad::{
-  color, 
-  experimental::animation::{AnimatedSprite, Animation},
-  prelude::{
-    DrawTextureParams,
-    Texture2D,
-    Vec2,
-    draw_texture_ex,
-    vec2
-  }
-};
+use macroquad::{color, experimental::animation::{AnimatedSprite, Animation}, prelude::{DrawTextureParams, Texture2D, Vec2, draw_circle, draw_texture_ex, vec2}};
+use macroquad_platformer::World;
 
 #[derive(Debug, Copy, Clone)]
 pub enum Direction {
@@ -23,6 +14,7 @@ pub struct Player {
   pub moving: bool,
   sprite: AnimatedSprite,
   direction: Direction,
+  speed: u8,
 }
 
 impl Player {
@@ -59,10 +51,26 @@ impl Player {
       direction: Direction::Down,
       sprite,
       moving: false,
+      speed: 5,
     }
   }
 
   pub fn draw(&mut self, player_texture: Texture2D) {
+    let debug = false;
+    if debug {
+      // collid top left
+      draw_circle(self.position.x + 7., self.position.y + 7., 2., color::BLACK);
+
+      // collid top right
+      draw_circle(self.position.x + 32. - 7., self.position.y + 7., 2., color::BLACK);
+
+      // collid down left
+      draw_circle(self.position.x + 7., self.position.y + 32. + 5., 2., color::BLACK);
+
+      // collid down right
+      draw_circle(self.position.x + 32. - 7., self.position.y + 32. + 5., 2., color::BLACK);
+    }
+
     draw_texture_ex(
       player_texture, 
       self.position.x, 
@@ -76,25 +84,62 @@ impl Player {
     )
   }
 
-  pub fn update(&mut self) {
+  pub fn update(&mut self, collision_world: &World) {
     self.sprite.playing = self.moving;
 
     self.sprite.set_animation(self.direction as usize);
     self.sprite.update();
 
+    let point_left_top = vec2(self.position.x + 7., self.position.y + 7.);
+    let point_right_top = vec2(self.position.x + 32. - 7., self.position.y + 7.);
+    let point_left_bottom = vec2(self.position.x + 7., self.position.y + 32. + 5.);
+    let point_right_bottom = vec2(self.position.x + 32. - 7., self.position.y + 32. + 5.);
+
     if self.moving {
+      let collide_top = 
+        (collision_world.solid_at(point_left_top) && !collision_world.solid_at(point_left_bottom)) || 
+        (collision_world.solid_at(point_right_top) && !collision_world.solid_at(point_right_bottom));
+
+      let collide_bottom = 
+        (collision_world.solid_at(point_left_bottom) && !collision_world.solid_at(point_left_top)) || 
+        (collision_world.solid_at(point_right_bottom) && !collision_world.solid_at(point_right_top));
+
+      let collide_left = 
+        (collision_world.solid_at(point_left_bottom) && !collision_world.solid_at(point_right_bottom)) || 
+        (collision_world.solid_at(point_left_top) && !collision_world.solid_at(point_right_top));
+
+      let collide_right = 
+        (collision_world.solid_at(point_right_top) && !collision_world.solid_at(point_left_top)) ||
+        (collision_world.solid_at(point_right_bottom) && !collision_world.solid_at(point_left_bottom));
+
       let pos = match self.direction {
         Direction::Up => {
-          vec2(0., -10.)
+          if collide_top  {
+            vec2(0., 0.)
+          } else {
+            vec2(0., -(self.speed as f32))
+          }
         },
         Direction::Down  => {
-          vec2(0., 10.)
+          if collide_bottom {
+            vec2(0., 0.)
+          } else {
+            vec2(0., self.speed as f32)
+          }
         },
         Direction::Left  => {
-          vec2(-10., 0.)
+          if collide_left {
+            vec2(0., 0.)
+          } else {
+            vec2(-(self.speed as f32), 0.)
+          }
         },
         Direction::Right  => {
-          vec2(10., 0.)
+          if collide_right {
+            vec2(0., 0.)
+          } else {
+            vec2(self.speed as f32, 0.)
+          }
         },
       };
 

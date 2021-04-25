@@ -39,6 +39,7 @@ name = "arena_gungeon"
 version = "0.1.0"
 dependencies = [
  "macroquad",
+ "macroquad-platformer",
  "macroquad-tiled",
 ]
 
@@ -461,6 +462,15 @@ dependencies = [
  "miniquad",
  "quad-rand",
  "rodio",
+]
+
+[[package]]
+name = "macroquad-platformer"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "778dc06c04525a167ba7d0f75399a30ab2e13502bbe6a09d518b8ab9ff508d56"
+dependencies = [
+ "macroquad",
 ]
 
 [[package]]
