@@ -57,7 +57,7 @@ impl Entity {
 
     let point_left_top = vec2(self.position.x, self.position.y);
     let point_right_top = vec2(self.position.x + self.tile_width as f32, self.position.y);
-    let point_left_bottom = vec2(self.position.x + 7., self.position.y + self.tile_height as f32);
+    let point_left_bottom = vec2(self.position.x, self.position.y + self.tile_height as f32);
     let point_right_bottom = vec2(self.position.x + self.tile_width as f32, self.position.y + self.tile_height as f32);
 
     if self.moving {
