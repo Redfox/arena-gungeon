@@ -1,7 +1,7 @@
 use macroquad::prelude::{KeyCode, Rect, clear_background, collections::storage, is_key_down};
 use macroquad::color::SKYBLUE;
 
-use crate::{entities::player::{Direction, Player}, resources::Resources};
+use crate::{entities::{entity::Direction, player::Player}, resources::Resources};
 
 use super::Scenes;
 
@@ -36,18 +36,18 @@ impl ArenaDungeonScreen {
 
     if is_key_down(KeyCode::W) {
       self.player.set_direction(Direction::Up);
-      self.player.moving = true;
+      self.player.entity.moving = true;
     } else if is_key_down(KeyCode::S) {
       self.player.set_direction(Direction::Down);
-      self.player.moving = true;
+      self.player.entity.moving = true;
     } else if is_key_down(KeyCode::A) {
       self.player.set_direction(Direction::Left);
-      self.player.moving = true;
+      self.player.entity.moving = true;
     } else if is_key_down(KeyCode::D) {
       self.player.set_direction(Direction::Right);
-      self.player.moving = true;
+      self.player.entity.moving = true;
     } else {
-      self.player.moving = false;
+      self.player.entity.moving = false;
     }
 
     None
