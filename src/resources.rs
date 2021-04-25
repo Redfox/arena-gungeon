@@ -5,6 +5,7 @@ use macroquad_platformer::World as CollisionWorld;
 pub struct Resources {
   pub tiled_map: tiled::Map,
   pub player_texture: Texture2D,
+  pub enemy_texture: Texture2D,
   pub collision_world: CollisionWorld
 }
 
@@ -29,6 +30,11 @@ impl Resources {
       .expect("Fail to load playersheet");
     player_texture.set_filter(macroquad::prelude::FilterMode::Nearest);
 
+    let enemy_texture = load_texture("resources/enemy-spritesheet.png")
+      .await
+      .expect("Fail to load enemysheet");
+    enemy_texture.set_filter(macroquad::prelude::FilterMode::Nearest);
+
     let mut static_colliders = vec![];
     for (_x, _y, tile) in tiled_map.tiles("collision", None) {
       static_colliders.push(tile.is_some());
@@ -46,6 +52,7 @@ impl Resources {
     Ok(Resources {
       tiled_map,
       player_texture,
+      enemy_texture,
       collision_world
     })
   }

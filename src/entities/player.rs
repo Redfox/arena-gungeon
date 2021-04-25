@@ -1,4 +1,4 @@
-use macroquad::{experimental::animation::{AnimatedSprite, Animation}, prelude::{DrawTextureParams, Texture2D, Vec2, collections::storage, draw_circle, draw_texture_ex, vec2}};
+use macroquad::{experimental::animation::{AnimatedSprite, Animation}, prelude::{Texture2D, vec2}};
 use macroquad_platformer::World;
 
 use super::entity::{Direction, Entity};
