@@ -1,5 +1,6 @@
 use macroquad::{color, prelude::{DrawTextureParams, Texture2D, Vec2, animation::AnimatedSprite, draw_circle, draw_texture_ex, vec2}};
 use macroquad_platformer::World;
+use crate::constants::{WINDOW_HEIGHT};
 
 #[derive(Copy, Clone)]
 pub enum Direction {
@@ -15,6 +16,8 @@ pub struct Entity {
   pub sprite: AnimatedSprite,
   pub direction: Direction,
   pub speed: u8,
+  pub tile_width: u32,
+  pub tile_height: u32,
   pub texture: Texture2D,
 }
 
@@ -23,16 +26,16 @@ impl Entity {
     let debug = false;
     if debug {
       // collid top left
-      draw_circle(self.position.x + 7., self.position.y + 7., 2., color::BLACK);
+      draw_circle(self.position.x, self.position.y, 2., color::BLACK);
 
       // collid top right
-      draw_circle(self.position.x + 32. - 7., self.position.y + 7., 2., color::BLACK);
+      draw_circle(self.position.x + self.tile_width as f32, self.position.y, 2., color::BLACK);
 
       // collid down left
-      draw_circle(self.position.x + 7., self.position.y + 32. + 5., 2., color::BLACK);
+      draw_circle(self.position.x, self.position.y + self.tile_height as f32, 2., color::BLACK);
 
       // collid down right
-      draw_circle(self.position.x + 32. - 7., self.position.y + 32. + 5., 2., color::BLACK);
+      draw_circle(self.position.x + self.tile_width as f32, self.position.y + self.tile_height as f32, 2., color::BLACK);
     }
 
     draw_texture_ex(
@@ -54,15 +57,20 @@ impl Entity {
     self.sprite.set_animation(self.direction as usize);
     self.sprite.update();
 
-    let point_left_top = vec2(self.position.x + 7., self.position.y + 7.);
-    let point_right_top = vec2(self.position.x + 32. - 7., self.position.y + 7.);
-    let point_left_bottom = vec2(self.position.x + 7., self.position.y + 32. + 5.);
-    let point_right_bottom = vec2(self.position.x + 32. - 7., self.position.y + 32. + 5.);
+    let wall_height = 32.;
+    let tile_width = self.tile_width as f32;
+    let tile_height = self.tile_height as f32;
+
+    let point_left_top = vec2(self.position.x, self.position.y);
+    let point_right_top = vec2(self.position.x + tile_width, self.position.y);
+    let point_left_bottom = vec2(self.position.x, self.position.y + tile_height);
+    let point_right_bottom = vec2(self.position.x + tile_width, self.position.y + tile_height);
 
     if self.moving {
       let collide_top = 
         (collision_world.solid_at(point_left_top) && !collision_world.solid_at(point_left_bottom)) || 
-        (collision_world.solid_at(point_right_top) && !collision_world.solid_at(point_right_bottom));
+        (collision_world.solid_at(point_right_top) && !collision_world.solid_at(point_right_bottom)) &&
+        point_right_bottom.y + wall_height < WINDOW_HEIGHT as f32;
 
       let collide_bottom = 
         (collision_world.solid_at(point_left_bottom) && !collision_world.solid_at(point_left_top)) || 
