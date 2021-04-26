@@ -1,5 +1,7 @@
-use macroquad::{experimental::animation::{AnimatedSprite, Animation}, prelude::{Texture2D, vec2}};
+use macroquad::{experimental::animation::{AnimatedSprite, Animation}, prelude::{collections::storage, vec2}};
 use macroquad_platformer::World;
+
+use crate::resources::Resources;
 
 use super::entity::{Direction, Entity};
 
@@ -38,6 +40,8 @@ impl Player {
       }
     ], true);
     
+    let resources = storage::get::<Resources>();
+
     Player {
       entity: Entity {
         position: vec2(100., 100.),
@@ -46,13 +50,14 @@ impl Player {
         moving: false,
         speed: 5,
         tile_height,
-        tile_width
+        tile_width,
+        texture: resources.player_texture,
       }
     }
   }
 
-  pub fn draw(&mut self, texture: Texture2D) {
-    self.entity.draw(texture);
+  pub fn draw(&mut self) {
+    self.entity.draw();
   }
 
   pub fn update(&mut self, collision_world: &World) {

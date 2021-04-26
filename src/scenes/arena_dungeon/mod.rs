@@ -35,11 +35,11 @@ impl ArenaDungeonScreen {
     resources.tiled_map.draw_tiles("wall", Rect::new(0.0, 0.0, w as f32, h as f32), None);
     
     self.player.update(&resources.collision_world);
-    self.player.draw(resources.player_texture);
+    self.player.draw();
 
     for enemy in self.enemies.iter_mut() {
       enemy.update(&resources.collision_world);
-      enemy.draw(resources.enemy_texture);
+      enemy.draw();
     };
     
     resources.tiled_map.draw_tiles("toplayer", Rect::new(0.0, 0.0, w as f32, h as f32), None);

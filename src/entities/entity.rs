@@ -18,10 +18,11 @@ pub struct Entity {
   pub speed: u8,
   pub tile_width: u32,
   pub tile_height: u32,
+  pub texture: Texture2D,
 }
 
 impl Entity {
-  pub fn draw(&mut self, texture: Texture2D) {
+  pub fn draw(&mut self) {
     let debug = false;
     if debug {
       // collid top left
@@ -38,7 +39,7 @@ impl Entity {
     }
 
     draw_texture_ex(
-      texture, 
+      self.texture, 
       self.position.x, 
       self.position.y, 
       color::WHITE,
