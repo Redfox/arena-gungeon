@@ -1,5 +1,6 @@
 use macroquad::{color, prelude::{DrawTextureParams, Texture2D, Vec2, animation::AnimatedSprite, draw_circle, draw_texture_ex, vec2}};
 use macroquad_platformer::World;
+use crate::constants::{WINDOW_HEIGHT};
 
 #[derive(Copy, Clone)]
 pub enum Direction {
@@ -55,6 +56,7 @@ impl Entity {
     self.sprite.set_animation(self.direction as usize);
     self.sprite.update();
 
+    let wall_height = 32.;
     let tile_width = self.tile_width as f32;
     let tile_height = self.tile_height as f32;
 
@@ -66,7 +68,8 @@ impl Entity {
     if self.moving {
       let collide_top = 
         (collision_world.solid_at(point_left_top) && !collision_world.solid_at(point_left_bottom)) || 
-        (collision_world.solid_at(point_right_top) && !collision_world.solid_at(point_right_bottom));
+        (collision_world.solid_at(point_right_top) && !collision_world.solid_at(point_right_bottom)) &&
+        point_right_bottom.y + wall_height < WINDOW_HEIGHT as f32;
 
       let collide_bottom = 
         (collision_world.solid_at(point_left_bottom) && !collision_world.solid_at(point_left_top)) || 
