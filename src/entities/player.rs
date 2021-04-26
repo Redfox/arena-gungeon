@@ -11,7 +11,9 @@ pub struct Player {
 
 impl Player {
   pub fn new() -> Self {
-    let sprite = AnimatedSprite::new(32, 32, &[
+    let tile_width = 18;
+    let tile_height = 20;
+    let sprite = AnimatedSprite::new(tile_width, tile_height, &[
       Animation {
         name: "up".to_string(),
         row: 0,
@@ -47,7 +49,9 @@ impl Player {
         sprite,
         moving: false,
         speed: 5,
-        texture: resources.player_texture
+        tile_height,
+        tile_width,
+        texture: resources.player_texture,
       }
     }
   }
