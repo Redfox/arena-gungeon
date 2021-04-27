@@ -1,4 +1,5 @@
 use macroquad::prelude::{Vec2, animation::{AnimatedSprite, Animation}, collections::storage, get_time};
+use macroquad::rand;
 use macroquad_platformer::World;
 
 use crate::resources::Resources;
@@ -67,29 +68,28 @@ impl Enemy {
   }
 
   pub fn move_random(&mut self) {
-    // self.entity.moving = true;
+    self.entity.moving = true;
 
-    // let time = ((get_time() * 2.0) as usize) % 5;
+    let time = ((get_time() * 2.0) as usize) % 5;
     
-    // if self.last_dir != time {
-    //   self.last_dir = time;
+    if self.last_dir != time {
+      self.last_dir = time;
 
-    //   let number = rand::thread_rng().gen_range(0..=3);
+      let number = rand::gen_range(0, 3);
 
-    //   let random_dir: Option<Direction> = match number {
-    //     0 => Some(Direction::Down),
-    //     1 => Some(Direction::Up),
-    //     2 => Some(Direction::Left),
-    //     3 => Some(Direction::Right),
-    //     _ => None
-    //   };
+      let random_dir: Option<Direction> = match number {
+        0 => Some(Direction::Down),
+        1 => Some(Direction::Up),
+        2 => Some(Direction::Left),
+        3 => Some(Direction::Right),
+        _ => None
+      };
 
-    //   match random_dir {
-    //     Some(dir) => self.entity.direction = dir,
-    //     None => {}
-    //   }
+      match random_dir {
+        Some(dir) => self.entity.direction = dir,
+        None => {}
+      }
       
-    // }
-
+    }
   }
 }
