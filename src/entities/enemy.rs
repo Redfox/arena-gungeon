@@ -1,6 +1,6 @@
 use macroquad::prelude::{Vec2, animation::{AnimatedSprite, Animation}, collections::storage, get_time};
+use macroquad::rand;
 use macroquad_platformer::World;
-use rand::Rng;
 
 use crate::resources::Resources;
 
@@ -75,7 +75,7 @@ impl Enemy {
     if self.last_dir != time {
       self.last_dir = time;
 
-      let number = rand::thread_rng().gen_range(0..=3);
+      let number = rand::gen_range(0, 3);
 
       let random_dir: Option<Direction> = match number {
         0 => Some(Direction::Down),
@@ -91,6 +91,5 @@ impl Enemy {
       }
       
     }
-
   }
 }
