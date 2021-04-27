@@ -36,7 +36,7 @@ Arena Gungeon is made with [Macroquad](https://github.com/not-fl3/macroquad), to
 apt install libx11-dev libxi-dev libgl1-mesa-dev libasound2-dev
 ```
 
-## Buildin to WebAssembly
+## Building to WebAssembly
 
 Add build target for webassembly
 
@@ -62,3 +62,7 @@ start the server by using the correct path
 basic-http-server . # starts server based on current directory
 basic-http-server static # start server in the folder /static
 ```
+
+## Credits
+
+ * Tileset created by [0x72](https://0x72.itch.io/16x16-dungeon-tileset)
