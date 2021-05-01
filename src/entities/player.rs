@@ -3,10 +3,11 @@ use macroquad_platformer::World;
 
 use crate::resources::Resources;
 
-use super::entity::{Direction, Entity};
+use super::{entity::{Direction, Entity}, skill::{FireBall, Heal, Skill}};
 
 pub struct Player {
   pub entity: Entity,
+  pub skills: [Skill; 1]
 }
 
 impl Player {
@@ -42,6 +43,9 @@ impl Player {
     
     let resources = storage::get::<Resources>();
 
+    let fireball = FireBall {};
+    let heal = Heal {};  
+
     Player {
       entity: Entity {
         position: vec2(100., 100.),
@@ -52,7 +56,8 @@ impl Player {
         tile_height,
         tile_width,
         texture: resources.player_texture,
-      }
+      },
+      skills: [fireball, heal]
     }
   }
 

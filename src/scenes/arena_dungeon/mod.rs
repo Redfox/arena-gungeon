@@ -3,11 +3,15 @@ use macroquad::color::SKYBLUE;
 
 use crate::{entities::{enemy::Enemy, entity::Direction, player::Player}, resources::Resources};
 
+mod hud;
+use self::hud::ArenaHUD;
+
 use super::Scenes;
 
 pub struct ArenaDungeonScreen {
   pub player: Player,
-  pub enemies: [Enemy; 4]
+  pub enemies: [Enemy; 4],
+  pub hud: ArenaHUD
 }
 
 impl ArenaDungeonScreen {
@@ -18,9 +22,12 @@ impl ArenaDungeonScreen {
     let enemy3 = Enemy::new(Vec2::new(700., 50.));
     let enemy4 = Enemy::new(Vec2::new(400., 600.));
 
+    let hud = ArenaHUD::new();
+
     ArenaDungeonScreen {
       player,
-      enemies: [enemy1, enemy2, enemy3, enemy4]
+      enemies: [enemy1, enemy2, enemy3, enemy4],
+      hud
     }
   }
 
@@ -63,6 +70,8 @@ impl ArenaDungeonScreen {
     for enemy in self.enemies.iter_mut() {
       enemy.move_random();
     };
+
+    self.hud.render_player_hud();
    
     None
   }
