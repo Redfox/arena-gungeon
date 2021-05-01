@@ -1,5 +1,5 @@
 use macroquad::{
-  prelude::{draw_rectangle, screen_height, screen_width},
+  prelude::{draw_rectangle, screen_height},
   color,
 };
 

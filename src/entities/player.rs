@@ -7,7 +7,7 @@ use super::{entity::{Direction, Entity}, skill::{FireBall, Heal, Skill}};
 
 pub struct Player {
   pub entity: Entity,
-  pub skills: [Skill; 1]
+  pub skills: Vec<Box<dyn Skill>>
 }
 
 impl Player {
@@ -43,9 +43,10 @@ impl Player {
     
     let resources = storage::get::<Resources>();
 
-    let fireball = FireBall {};
-    let heal = Heal {};  
-
+    let mut skills = Vec::<Box<dyn Skill>>::new();
+    skills.push(Box::new(FireBall {}));
+    skills.push(Box::new(Heal {}));
+    
     Player {
       entity: Entity {
         position: vec2(100., 100.),
@@ -57,7 +58,7 @@ impl Player {
         tile_width,
         texture: resources.player_texture,
       },
-      skills: [fireball, heal]
+      skills
     }
   }
 
